@@ -1,4 +1,4 @@
-=== Import Listings into the WP Job Manager Plugin ===
+=== Import Listings into WP Job Manager ===
 Contributors: soflyy, wpallimport
 Tags: Tags: wp job manager, import listings, import job listings, import directory, job directory, import job directory, wp job manager, import wp job manager, import wp job manager listings, import job board, job board
 License: GPLv2 or later
