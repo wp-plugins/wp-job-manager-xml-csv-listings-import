@@ -49,6 +49,13 @@ However, [the professional edition of WP All Import](http://www.wpallimport.com/
 
 [Upgrade to the professional edition of WP All Import now.](http://www.wpallimport.com/order-now/?utm_source=free-plugin&utm_medium=dot-org&utm_campaign=wpjm)
 
+= Developers: Create Your Own Add-On =
+This Add-On was created using the [Rapid Add-On API](http://www.wpallimport.com/documentation/addon-dev/overview/) for WP All Import. We've made it really easy to write your own Add-On. 
+
+Don't have time? We'll write one for you.
+
+[Read more about getting an Add-On made for your plugin or theme.](http://www.wpallimport.com/add-ons/#developers)
+
 == Installation ==
 
 First, install [WP All Import](http://wordpress.org/plugins/wp-all-import "WordPress XML & CSV Import").
