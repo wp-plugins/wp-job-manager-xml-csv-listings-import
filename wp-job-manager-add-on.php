@@ -106,24 +106,6 @@ function wpjm_addon_import( $post_id, $data, $import_options ) {
         }
     }
 
-function company_logo($post_id, $data, $import_options ) {
-
-    $attachment_id = $data['company_logo']['attachment_id'];
-
-    $url = wp_get_attachment_url( $attachment_id );
-
-    update_post_meta( $post_id, '_company_logo', $url );
-
-}
-function upload_company_video( $post_id, $data, $import_options ) {
-
-    $attachment_id = $data['upload_company_video']['attachment_id'];
-
-    $url = wp_get_attachment_url( $attachment_id );
-
-    update_post_meta( $post_id, '_company_video', $url );
-
-}
     // set featured image
     $field = 'company_featured_image';
 
@@ -169,6 +151,26 @@ function upload_company_video( $post_id, $data, $import_options ) {
         update_post_meta( $post_id, $field, $date );
 
     }
+}
+
+function company_logo($post_id, $data, $import_options ) {
+
+    $attachment_id = $data['company_logo']['attachment_id'];
+
+    $url = wp_get_attachment_url( $attachment_id );
+
+    update_post_meta( $post_id, '_company_logo', $url );
+
+}
+
+function upload_company_video( $post_id, $data, $import_options ) {
+
+    $attachment_id = $data['upload_company_video']['attachment_id'];
+
+    $url = wp_get_attachment_url( $attachment_id );
+
+    update_post_meta( $post_id, '_company_video', $url );
+
 }
 
 
