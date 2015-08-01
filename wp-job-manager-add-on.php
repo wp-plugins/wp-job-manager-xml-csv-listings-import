@@ -4,7 +4,7 @@
 Plugin Name: WP All Import - WP Job Manager Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: Supporting imports into the WP Job Manager theme.
-Version: 1.0.0
+Version: 1.0.1
 Author: Soflyy
 */
 
@@ -31,25 +31,33 @@ $wpjm_addon->add_field( '_company_logo', 'Company Logo', 'image');
 
 $wpjm_addon->add_field( 'company_featured_image', 'Featured Image', 'image');
 
-// field is _company_video, will 'image' add_field support videos?
-$wpjm_addon->add_field( '_company_video', 'Company Video', 'file');
+$wpjm_addon->add_field( 'video_type', 'Company Video', 'radio',
+    array(
+        'external' => array(
+            'Externally Hosted',
+            $wpjm_addon->add_field( '_company_video_url', 'Video URL', 'text')
+        ),
+        'local' => array(
+            'Locally Hosted',
+            $wpjm_addon->add_field( '_company_video_id', 'Upload Video', 'file')
+)));
 
 $wpjm_addon->add_field( '_job_expires', 'Listing Expiry Date', 'text', null, 'Import date in any strtotime compatible format.');
 
 $wpjm_addon->add_field( '_filled', 'Filled', 'radio', 
-	array(
-		'0' => 'No',
-		'1' => 'Yes'
-	),
-	'Filled listings will no longer accept applications.'
+    array(
+        '0' => 'No',
+        '1' => 'Yes'
+    ),
+    'Filled listings will no longer accept applications.'
 );
 
 $wpjm_addon->add_field( '_featured', 'Featured Listing', 'radio', 
-	array(
-		'0' => 'No',
-		'1' => 'Yes'
-	),
-	'Featured listings will be sticky during searches, and can be styled differently.'
+    array(
+        '0' => 'No',
+        '1' => 'Yes'
+    ),
+    'Featured listings will be sticky during searches, and can be styled differently.'
 );
 
 $wpjm_addon->add_options(
@@ -66,14 +74,14 @@ $wpjm_addon->add_options(
 $wpjm_addon->set_import_function( 'wpjm_addon_import' );
 
 $wpjm_addon->admin_notice(
-	'The WP Job Manager Add-On requires WP All Import <a href="http://www.wpallimport.com/order-now/?utm_source=free-plugin&utm_medium=dot-org&utm_campaign=wpjm" target="_blank">Pro</a> or <a href="http://wordpress.org/plugins/wp-all-import" target="_blank">Free</a>, and the <a href="https://wordpress.org/plugins/wp-job-manager/">WP Job Manager</a> plugin.',
-	array( 
-		"plugins" => array( "wp-job-manager/wp-job-manager.php" ),
+    'The WP Job Manager Add-On requires WP All Import <a href="http://www.wpallimport.com/order-now/?utm_source=free-plugin&utm_medium=dot-org&utm_campaign=wpjm" target="_blank">Pro</a> or <a href="http://wordpress.org/plugins/wp-all-import" target="_blank">Free</a>, and the <a href="https://wordpress.org/plugins/wp-job-manager/">WP Job Manager</a> plugin.',
+    array( 
+        "plugins" => array( "wp-job-manager/wp-job-manager.php" ),
 ) );
 
 $wpjm_addon->run( array(
-		"plugins" => array( "wp-job-manager/wp-job-manager.php" ),
-		'post_types' => array( 'job_listing' ) 
+        "plugins" => array( "wp-job-manager/wp-job-manager.php" ),
+        'post_types' => array( 'job_listing' ) 
 ) );
 
 function wpjm_addon_import( $post_id, $data, $import_options ) {
@@ -101,10 +109,11 @@ function wpjm_addon_import( $post_id, $data, $import_options ) {
 
         if ( $wpjm_addon->can_update_meta( $field, $import_options ) ) {
 
-	        update_post_meta( $post_id, $field, $data[$field] );
+            update_post_meta( $post_id, $field, $data[$field] );
 
         }
     }
+
 
     // set featured image
     $field = 'company_featured_image';
@@ -119,8 +128,7 @@ function wpjm_addon_import( $post_id, $data, $import_options ) {
 
     // update video and logo
     $fields = array(
-        '_company_logo',
-        '_company_video'
+        '_company_logo'
     );
 
     if ( $wpjm_addon->can_update_image( $import_options ) ) {
@@ -137,6 +145,24 @@ function wpjm_addon_import( $post_id, $data, $import_options ) {
 
     }
 
+    // update video
+
+    if ( $wpjm_addon->can_update_meta( '_company_video', $import_options ) ) {
+
+        if ( $data['video_type'] == 'external' ) {
+
+            update_post_meta( $post_id, '_company_video', $data['_company_video_url'] );
+
+        } elseif ( $data['video_type'] == 'local' ) {
+
+            $attachment_id = $data['_company_video_id']['attachment_id'];
+
+            $url = wp_get_attachment_url( $attachment_id );
+
+            update_post_meta( $post_id, '_company_video', $url );
+        }
+    }
+
     // update listing expiration date
     $field = '_job_expires';
 
@@ -146,7 +172,7 @@ function wpjm_addon_import( $post_id, $data, $import_options ) {
 
     if ( $wpjm_addon->can_update_meta( $field, $import_options ) && !empty( $date ) ) {
 
-	    $date = date( 'Y-m-d', $date );
+        $date = date( 'Y-m-d', $date );
 
         update_post_meta( $post_id, $field, $date );
 
@@ -160,16 +186,6 @@ function company_logo($post_id, $data, $import_options ) {
     $url = wp_get_attachment_url( $attachment_id );
 
     update_post_meta( $post_id, '_company_logo', $url );
-
-}
-
-function upload_company_video( $post_id, $data, $import_options ) {
-
-    $attachment_id = $data['upload_company_video']['attachment_id'];
-
-    $url = wp_get_attachment_url( $attachment_id );
-
-    update_post_meta( $post_id, '_company_video', $url );
 
 }
 

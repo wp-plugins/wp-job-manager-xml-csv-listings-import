@@ -4,8 +4,8 @@ Tags: Tags: wp job manager, import listings, import job listings, import directo
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1.0
-Tested up to: 4.2.2
-Stable tag: 1.0.0
+Tested up to: 4.2.3
+Stable tag: 1.0.1
 
 Easily import job listings from any XML or CSV file to the WP Job Manager plugin with the WP Job Manager Add-On for WP All Import.
 
@@ -77,6 +77,10 @@ The WP Job Manager Add-On will appear in the Step 3 of WP All Import.
 Aside from making your import easier and simpler, the WP Job Manager Add-On will fully support WP Job Manager's various fields and image settings as well as allow you to easily import location data.
 
 == Changelog ==
+
+= 1.0.1 =
+* Improve company video import
+* Bug fixes
 
 = 1.0.0 =
 * Initial release on WP.org.
